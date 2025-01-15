@@ -20,7 +20,7 @@ const News =(props)=> {
   
   
   
-  const updateNews = async () => {
+  const updateNews = useCallback(async () => {
     try {
       props.setProgress(10);  // Start loading at 10%
       const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;  
@@ -45,7 +45,7 @@ const News =(props)=> {
       
       props.setProgress(100);
     }
-  }
+  },[props, page, props.country, props.category, props.pageSize]);
   
   useEffect(() => {
     document.title=`${capitalizeFirstLetter(props.category)} - NewsMonkey`;
@@ -53,7 +53,7 @@ const News =(props)=> {
     updateNews();
 
   
-   } , [])
+   } , [props.category, updateNews])
   
   
     // let url = https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=95c514a64a094ca2af8f55faab84073d&page=1&pageSize=${props.pageSize};    
