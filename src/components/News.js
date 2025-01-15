@@ -24,8 +24,17 @@ const News =(props)=> {
     try {
       props.setProgress(10);  // Start loading at 10%
       const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;  
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }};
       setLoading(true)  
-      let data = await fetch(url);
+      let data = await fetch(url,options);
+      if (!data.ok) {
+        throw new Error(`HTTP error! Status: ${data.status}`);
+      }
       props.setProgress(30);  // Set progress to 30% after the fetch request
   
       let parsedData = await data.json();
