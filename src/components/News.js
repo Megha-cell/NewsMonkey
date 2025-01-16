@@ -1,5 +1,5 @@
 
-import React,{useEffect,useState,useCallback} from 'react'
+import React,{useEffect,useState} from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner'
 import PropTypes from 'prop-types'
@@ -20,11 +20,10 @@ const News =(props)=> {
   
   
   
-  const updateNews = useCallback(async () => {
+  const updateNews = async () => {
     try {
       props.setProgress(10);  // Start loading at 10%
       const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;  
-      
       setLoading(true)  
       let data = await fetch(url);
       props.setProgress(30);  // Set progress to 30% after the fetch request
@@ -45,7 +44,7 @@ const News =(props)=> {
       
       props.setProgress(100);
     }
-  },[props, page, props.country, props.category, props.pageSize]);
+  }
   
   useEffect(() => {
     document.title=`${capitalizeFirstLetter(props.category)} - NewsMonkey`;
@@ -53,7 +52,7 @@ const News =(props)=> {
     updateNews();
 
   
-   } , [props.category, updateNews])
+   } , [])
   
   
     // let url = https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=95c514a64a094ca2af8f55faab84073d&page=1&pageSize=${props.pageSize};    
@@ -106,9 +105,7 @@ const News =(props)=> {
     
       
       
-      //const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;    
-      const url = `/api/news?country=${props.country}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
-
+      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;    
       setPage(page+1)
       let data = await fetch(url);
       let parsedData = await data.json();
