@@ -24,7 +24,7 @@ const News =(props)=> {
   const updateNews = async () => {
     try {
       props.setProgress(10);  // Start loading at 10%
-      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;  
+      const url = `http://localhost:5000/news?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;  
       setLoading(true)  
       let data = await fetch(url);
       props.setProgress(30);  // Set progress to 30% after the fetch request
@@ -108,7 +108,7 @@ const News =(props)=> {
     
       
       
-      const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;    
+      const url = `http://localhost:5000/news?country=${props.country}&category=${props.category}&apikey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;    
       setPage(page+1)
       let data = await fetch(url);
       let parsedData = await data.json();
