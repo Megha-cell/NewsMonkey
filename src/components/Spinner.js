@@ -1,7 +1,7 @@
 import React from 'react'
 import loading from './loading.gif'
 
-const spinner =()=> {
+const Spinner =()=> {
   
     return (
       <div className="text-center">
@@ -11,4 +11,4 @@ const spinner =()=> {
   }
 
 
-export default spinner
+export default Spinner

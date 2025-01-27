@@ -37,7 +37,9 @@ const News =(props)=> {
       
     
   
-      props.setProgress(100);  // Complete the progress
+      props.setProgress(100);
+        // Complete the progress
+      
     } catch (error) {
       console.error('Error fetching news:', error);
       setArticles([])
