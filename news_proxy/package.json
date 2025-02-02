@@ -1,8 +1,9 @@
 {
-  "name": "news-proxy",
-  "version": "1.0.0",
-  "main": "api/news.js",
-  "dependencies": {
-    "node-fetch": "^2.6.1"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "index.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/news", "dest": "/index.js" }
+  ]
 }
