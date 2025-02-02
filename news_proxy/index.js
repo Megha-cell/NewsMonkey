@@ -1,39 +1,28 @@
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
-require("dotenv").config(); // Load environment variables from .env file
+const fetch = require('node-fetch');
 
-const app = express();
-const PORT = 5000; // The port where your proxy server will run
-
-// Enable CORS so your React app can connect to the proxy
-app.use(cors());
-
-// Proxy endpoint to fetch news
-app.get("/news", async (req, res) => {
-  try {
-    const { country, category, page, pageSize } = req.query; // Get parameters from the request
-
-    // Make a request to the NewsAPI
-    const response = await axios.get("https://newsapi.org/v2/top-headlines", {
-      params: {
-        country,
-        category,
-        page,
-        pageSize,
-        apiKey: process.env.REACT_APP_NEWS_API_KEY, // Use your API key from .env
-      },
-    });
-
-    // Send the data back to the React app
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error fetching news:", error.message);
-    res.status(500).json({ error: "Error fetching news" });
+module.exports = async (req, res) => {
+  // Set CORS headers to allow requests from any origin
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  // Handle preflight requests (OPTIONS)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
-});
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Proxy server running on http://localhost:${PORT}`);
-});
+  const category = req.query.category || 'general';
+  const country = req.query.country || 'us';
+  const pageSize = req.query.pageSize || 10;
+  const apiKey = process.env.NEWS_API_KEY; // Ensure you have this in your Vercel environment variables
+
+  const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apikey=${apiKey}&pageSize=${pageSize}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+};
